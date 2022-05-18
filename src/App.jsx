@@ -5,8 +5,6 @@ import Home from './pages/HomePage/Home';
 import Room from './pages/RoomPage/Room';
 
 function App() {
-  const [isHost, setIsHost] = useState(false);
-  const [socketURL, setSocketURL] = useState("");
   const [username, setUsername] = useState("");
   const [roomCode, setRoomCode] = useState("");
 

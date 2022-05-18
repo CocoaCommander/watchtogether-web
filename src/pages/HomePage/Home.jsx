@@ -13,12 +13,17 @@ const Home = ({
         setRoomCode(e.target.value);
     }
 
+    const createRoom = () => {
+        // get roomCode from API
+        // navigate to '/:roomid'
+    }
+
     return (
         <div className="home">
             <h1>Home</h1>
             <label htmlFor='username'>Enter a username:</label>
             <input type={"text"} onChange={handleUsernameChange} id={"username"}/>
-            <button disabled={username === ""}>Create Room</button>
+            <button disabled={username === ""} onClick={createRoom}>Create Room</button>
             <label htmlFor='room-code'>Join a room:</label>
             <input type={"text"} disabled={username === ""} id={"room-code"} placeholder={"Enter your room code"} onChange={handleRoomCodeChange}/>
         </div>
