@@ -1,24 +1,87 @@
 import { useEffect, useState } from 'react';
-import YouTubeEmbed from '../../components/Room/YouTubeEmbed/YouTubeEmbed';
+import { useLocation, useParams } from 'react-router-dom';
+import YouTube from 'react-youtube';
+import MessageInput from '../../components/Room/Messages/MessageInput';
+import MessageList from '../../components/Room/Messages/MessageList';
 import './Room.css'
 
-const Room = () => {
+const Room = ({
+    username,
+    socket,
+    setPlayer,
+    videoState,
+    setVideoState
+}) => {
 
-    const [isHost, setIsHost] = useState(false);
-    const [socketURL, setSocketURL] = useState("");
+    const [videoUrl, setVideoUrl] = useState("");
+
+    const location = useLocation();
+    const params = useParams();
 
     useEffect(() => {
-        // get room code from url
-        // get websocket url
-        // see if current user is the host and set isHost
-        // get list of users in room
-    })
+        setVideoUrl(location.state);
+    }, [location]);
 
-    const TEST_ID = "spN2_Tuw9hE";
+    
+    useEffect(() => {
+        switch(videoState) {
+            case -1:
+                console.log(`unstarted`);
+                break;
+            case 0:
+                console.log(`ended`);
+                break;
+            case 1:
+                console.log(`playing`);
+                socket.send(JSON.stringify({
+                    action: `play`,
+                    body: {
+                        username: username,
+                        id: params.roomid
+                    }
+                }));
+                break;
+            case 2:
+                console.log(`paused`);
+                socket.send(JSON.stringify({
+                    action: `pause`,
+                    body: {
+                        username: username,
+                        id: params.roomid
+                    }
+                }));
+                break;
+            case 3:
+                console.log(`buffering`);
+                break;
+            case 5:
+                console.log(`video cued`);
+                break;
+            default:
+                console.log(`uncaught number: ${videoState}`);
+                break;
+        }
+    }, [videoState]);
+
+    const registerVideo = e => {
+        console.log(e);
+        setPlayer(e);
+    }
+
+    // const pauseVideo = () => {
+    //     player.target.playVideo();
+    // }
     return (
         <>
             <h1>Room</h1>
-            <YouTubeEmbed embedId={TEST_ID} />
+            <div className='video-chat-container'>
+            <YouTube videoId={videoUrl} onStateChange={e => setVideoState(e.data)} onReady={registerVideo}/>
+                <div className='messages-box'>
+                    <MessageList />
+                    <MessageInput username={username} />
+                </div>
+                {/* <button onClick={pauseVideo}>Pause</button> */}
+            </div>
         </>
     )
 }

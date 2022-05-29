@@ -1,0 +1,19 @@
+.message-input {
+    display: flex;
+}
+
+.text-input {
+    flex-grow: 2;
+}
+
+.message-username {
+    color: grey;
+}
+
+.message-text {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: gray;
+    color: white;
+    margin: 0;
+}

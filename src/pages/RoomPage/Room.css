@@ -1,0 +1,22 @@
+.video-chat-container {
+    display: flex;
+}
+
+.messages-box {
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 20px;
+    border-radius: 15px;
+    border-width: 0.5px;
+    border-color: black;
+    border-style: solid;
+    padding: 10px;
+}
+
+.url-reader-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: left;
+}
