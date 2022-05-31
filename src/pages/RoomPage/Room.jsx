@@ -67,10 +67,7 @@ const Room = ({
         console.log(e);
         setPlayer(e);
     }
-
-    // const pauseVideo = () => {
-    //     player.target.playVideo();
-    // }
+    
     return (
         <>
             <h1>Room</h1>

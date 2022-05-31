@@ -3,7 +3,6 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Home from './pages/HomePage/Home';
 import Room from './pages/RoomPage/Room';
-// import "core-js/es";
 
 function App() {
   const [username, setUsername] = useState("");
@@ -11,6 +10,7 @@ function App() {
   const [socket, setSocket] = useState("");
   const [player, setPlayer] = useState(null);
   const [videoState, setVideoState] = useState(-1);
+  const [incomingState, setIncomingState] = useState("");
 
   const navigate = useNavigate();
 
@@ -26,15 +26,11 @@ function App() {
             break;
           case "play":
             console.log(`video is playing`);
-            if (player !== null) {
-              player.target.playVideo();
-            }
+            setIncomingState("play");
             break;
           case "pause":
             console.log(`video is paused`);
-            if (player !== null) {
-              player.target.pauseVideo();
-            }
+            setIncomingState("pause");
             break;
           default:
             console.log("try again")
@@ -43,11 +39,24 @@ function App() {
         }
     });
     setSocket(newSocket);
-  }, [player]);
+  }, []);
 
   useEffect(() => {
-    console.log(player);
-  }, [player])
+    if (player !== null) {
+      switch(incomingState) {
+        case "play":
+          player.target.playVideo();
+          break;
+        case "pause":
+          player.target.pauseVideo();
+          break;
+        default:
+          console.log("unexpected behavior");
+          break;
+      }
+    }
+
+  }, [player, incomingState])
 
   return (
     <div className='app'>
