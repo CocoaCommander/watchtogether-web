@@ -61,13 +61,13 @@ const Room = ({
                 console.log(`uncaught number: ${videoState}`);
                 break;
         }
-    }, [videoState]);
+    }, [videoState, params.roomid, socket, username]);
 
     const registerVideo = e => {
         console.log(e);
         setPlayer(e);
     }
-    
+
     return (
         <>
             <h1>Room</h1>
