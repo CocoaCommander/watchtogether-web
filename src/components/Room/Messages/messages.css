@@ -10,10 +10,19 @@
     color: grey;
 }
 
-.message-text {
+.message-text, .message-text-blue {
     padding: 10px;
     border-radius: 10px;
     background-color: gray;
     color: white;
     margin: 0;
+}
+
+.message-text-blue {
+    background-color: rgb(76, 76, 202);
+}
+
+.messages-list {
+    height: 300px;
+    overflow-y: auto;
 }

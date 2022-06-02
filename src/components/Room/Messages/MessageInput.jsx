@@ -2,12 +2,21 @@ import { useState } from "react";
 import './messages.css';
 
 const MessageInput = ({
-    username
+    username,
+    socket,
+    id
 }) => {
     const [messageText, setMessageText] = useState("");
 
     const sendMessage = () => {
-        // sends username and messageText
+        socket.send(JSON.stringify({
+            action: `message`,
+            body: {
+                id: id,
+                username: username,
+                message: messageText
+            }
+        }))
     }
     return (
         <div className="message-input">

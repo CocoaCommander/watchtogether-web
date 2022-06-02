@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './Home.css'
 const UrlReader = ({
     setVideoURL
@@ -38,7 +38,7 @@ const Home = ({
             action: 'join',
             body: {
                 id: roomCode,
-                username, username
+                username: username
             }
         }));
     }

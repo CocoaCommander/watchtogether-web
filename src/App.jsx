@@ -11,8 +11,11 @@ function App() {
   const [player, setPlayer] = useState(null);
   const [videoState, setVideoState] = useState(-1);
   const [incomingState, setIncomingState] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [incomingTime, setIncomingTime] = useState(0);
 
   const navigate = useNavigate();
+  const addMessage = (newMessage) => setMessages(state => [...state, newMessage]);
 
   useEffect(() => {
     let newSocket = new WebSocket(`ws://localhost:3001/sockets/video`);
@@ -22,16 +25,26 @@ function App() {
 
         switch(event.action) {
           case "success":
-            navigate(`/${event.sessionId}`, {state: event.videoUrl})
+            console.log(event);
+            setMessages(event.messageHistory);
+            navigate(`/${event.sessionId}`, {state: event.videoUrl});
             break;
           case "play":
             console.log(`video is playing`);
+            setIncomingTime(event.time);
             setIncomingState("play");
             break;
           case "pause":
             console.log(`video is paused`);
             setIncomingState("pause");
             break;
+          case "message":
+            console.log(`message received`);
+            addMessage({username: event.body.username, message: event.body.message});
+            break;
+          case "close":
+            console.log('somebody has left the room');
+            addMessage({username: "", message: event.message})
           default:
             console.log("try again")
             console.log(event);
@@ -39,13 +52,13 @@ function App() {
         }
     });
     setSocket(newSocket);
-  }, []);
+  }, [navigate, messages]);
 
   useEffect(() => {
     if (player !== null) {
       switch(incomingState) {
         case "play":
-          player.target.playVideo();
+          player.target.playVideo()
           break;
         case "pause":
           player.target.pauseVideo();
@@ -56,7 +69,11 @@ function App() {
       }
     }
 
-  }, [player, incomingState])
+  }, [player, incomingState, incomingTime]);
+
+  useEffect(() => {
+    console.log(messages);
+  }, [messages])
 
   return (
     <div className='app'>
@@ -70,6 +87,7 @@ function App() {
             setPlayer={setPlayer} 
             videoState={videoState} 
             setVideoState={setVideoState}
+            messages={messages}
           />
         }/>
       </Routes>

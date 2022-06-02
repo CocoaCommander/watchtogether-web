@@ -8,9 +8,11 @@ import './Room.css'
 const Room = ({
     username,
     socket,
+    player,
     setPlayer,
     videoState,
-    setVideoState
+    setVideoState,
+    messages
 }) => {
 
     const [videoUrl, setVideoUrl] = useState("");
@@ -21,6 +23,36 @@ const Room = ({
     useEffect(() => {
         setVideoUrl(location.state);
     }, [location]);
+
+    const waitForOpenConnection = (socket) => {
+        return new Promise((resolve, reject) => {
+            const maxNumberOfAttempts = 10
+            const intervalTime = 200 //ms
+    
+            let currentAttempt = 0
+            const interval = setInterval(() => {
+                if (currentAttempt > maxNumberOfAttempts - 1) {
+                    clearInterval(interval)
+                    reject(new Error('Maximum number of attempts exceeded'))
+                } else if (socket.readyState === socket.OPEN) {
+                    clearInterval(interval)
+                    resolve()
+                }
+                currentAttempt++
+            }, intervalTime)
+        })
+    }
+    
+    const sendMessage = async (socket, msg) => {
+        if (socket.readyState !== socket.OPEN) {
+            try {
+                await waitForOpenConnection(socket)
+                socket.send(msg)
+            } catch (err) { console.error(err) }
+        } else {
+            socket.send(msg)
+        }
+    }
 
     
     useEffect(() => {
@@ -33,23 +65,24 @@ const Room = ({
                 break;
             case 1:
                 console.log(`playing`);
-                socket.send(JSON.stringify({
+                sendMessage(socket, JSON.stringify({
                     action: `play`,
                     body: {
                         username: username,
-                        id: params.roomid
+                        id: params.roomid,
+                        time: player.target.getCurrentTime()
                     }
-                }));
+                }))
                 break;
             case 2:
                 console.log(`paused`);
-                socket.send(JSON.stringify({
+                sendMessage(socket, JSON.stringify({
                     action: `pause`,
                     body: {
                         username: username,
                         id: params.roomid
                     }
-                }));
+                }))
                 break;
             case 3:
                 console.log(`buffering`);
@@ -64,20 +97,19 @@ const Room = ({
     }, [videoState, params.roomid, socket, username]);
 
     const registerVideo = e => {
-        console.log(e);
         setPlayer(e);
     }
 
     return (
         <>
             <h1>Room</h1>
+            <h2>{`Join with ${params.roomid}`}</h2>
             <div className='video-chat-container'>
             <YouTube videoId={videoUrl} onStateChange={e => setVideoState(e.data)} onReady={registerVideo}/>
                 <div className='messages-box'>
-                    <MessageList />
-                    <MessageInput username={username} />
+                    <MessageList messages={messages} username={username}/>
+                    <MessageInput username={username} socket={socket} id={params.roomid}/>
                 </div>
-                {/* <button onClick={pauseVideo}>Pause</button> */}
             </div>
         </>
     )
