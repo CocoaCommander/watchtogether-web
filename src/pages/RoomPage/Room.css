@@ -3,20 +3,29 @@
 }
 
 .messages-box {
-    max-width: 300px;
+    max-width: 350px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     margin-left: 20px;
     border-radius: 15px;
-    border-width: 0.5px;
-    border-color: black;
+    border-color: rgba(0, 0, 0, 0.1);
     border-style: solid;
     padding: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.09);
 }
 
 .url-reader-container {
     margin-top: 30px;
     display: flex;
     justify-content: left;
+}
+
+.subheader {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.subheader > * {
+    margin-right: 20px;
 }

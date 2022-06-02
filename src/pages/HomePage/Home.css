@@ -5,3 +5,27 @@
     align-items: center;
     height: 100vh;
 }
+
+.step-one {
+    display: flex;
+}
+
+.step-two {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.section {
+    height: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.divider {
+    font-size: 48px;
+    margin-left: 30px;
+    margin-right: 30px;
+}

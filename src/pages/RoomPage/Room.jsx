@@ -16,6 +16,7 @@ const Room = ({
 }) => {
 
     const [videoUrl, setVideoUrl] = useState("");
+    const [title, setTitle] = useState("Loading...")
 
     const location = useLocation();
     const params = useParams();
@@ -98,12 +99,15 @@ const Room = ({
 
     const registerVideo = e => {
         setPlayer(e);
+        setTitle(e.target.getVideoData().title);
     }
 
     return (
         <>
-            <h1>Room</h1>
-            <h2>{`Join with ${params.roomid}`}</h2>
+            <h1>{title}</h1>
+            <div className='subheader'>
+                <h2>{`Join with ${params.roomid}`}</h2><button onClick={() => {navigator.clipboard.writeText(params.roomid)}}>Copy To Clipboard</button>
+            </div>
             <div className='video-chat-container'>
             <YouTube videoId={videoUrl} onStateChange={e => setVideoState(e.data)} onReady={registerVideo}/>
                 <div className='messages-box'>

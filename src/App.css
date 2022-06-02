@@ -1,4 +1,13 @@
 .app {
   margin-right: 3vw;
   margin-left: 3vw;
+  font-family: 'Open Sans', sans-serif;
+}
+
+button {
+  font-family: 'Open Sans', sans-serif;
+  border-radius: 10px;
+  border: none;
+  background-color: #3AB795;
+  color: white;
 }

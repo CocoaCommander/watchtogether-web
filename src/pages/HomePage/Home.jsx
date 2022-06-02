@@ -55,14 +55,25 @@ const Home = ({
 
     return (
         <div className="home">
-            <h1>Home</h1>
-            <label htmlFor='username'>Enter a username:</label>
-            <input type={"text"} onChange={handleUsernameChange} id={"username"}/>
-            <UrlReader setVideoURL={setVideoURL} />
-            <button disabled={username === ""} onClick={createRoom}>Create Room</button>
-            <label htmlFor='room-code'>Join a room:</label>
-            <input type={"text"} disabled={username === ""} id={"room-code"} placeholder={"Enter your room code"} onChange={handleRoomCodeChange}/>
-            <button disabled={username === "" && roomCode === ""} onClick={joinRoom}>Enter Room</button>
+            <h1>WatchTogether</h1>
+            <h2>Let's watch something together!</h2>
+            <div className='step-one'>
+                <label htmlFor='username'>Enter a username:</label>
+                <input type={"text"} onChange={handleUsernameChange} id={"username"}/>
+            </div>
+            <div className='step-two'>
+                <div className='section'>
+                    <UrlReader setVideoURL={setVideoURL} />
+                    <button onClick={username === "" ? "" : createRoom}>Create Room</button>
+                </div>
+                <div className='divider'>OR</div>
+                <div className='section'>
+                    <label htmlFor='code'>Join a room:</label>
+                    <input type={"text"} disabled={username === ""} id={"code"} placeholder={"Enter your room code"} onChange={handleRoomCodeChange}/>
+                    <button disabled={username === "" && roomCode === ""} onClick={username === "" && roomCode === "" ? "" : joinRoom}>Enter Room</button>
+                </div>
+            </div>
+
         </div>
     )
 }
