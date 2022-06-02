@@ -44,7 +44,8 @@ function App() {
             break;
           case "close":
             console.log('somebody has left the room');
-            addMessage({username: "", message: event.message})
+            addMessage({username: "", message: event.message});
+            break;
           default:
             console.log("try again")
             console.log(event);
